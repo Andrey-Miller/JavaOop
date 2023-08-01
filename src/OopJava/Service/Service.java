@@ -2,13 +2,14 @@ package OopJava.Service;
 
 import OopJava.Human.Human;
 import OopJava.Tree.FamilyTree;
-import OopJava.FileIO.InterfaceIO;
 import OopJava.FileIO.FileIO;
+
 import java.time.LocalDate;
 
 public class Service {
     private int id;
     private FamilyTree<Human> family;
+    private FileIO file;
 
     public Service(FamilyTree family) {
         this.family = family;
@@ -28,10 +29,6 @@ public class Service {
         id++;
         family.add(new Human(id, name, dateOfBirth));
     }
-    public void saveFamily(String str) {
-        FileIO save = new FileIO();
-        save.save(this.family, str);
-    }
 
     public void sortByName() {
         family.sortByName();
@@ -47,9 +44,11 @@ public class Service {
         return family.searchHuman(name);
     }
 
+    public void saveFamily(String str) {
+        file.save(this.family, str);
+    }
     public void loadFamily(String str) {
-        InterfaceIO load = new FileIO();
-        this.family = load.read(str);
+        this.family = file.read(str);
         id = 1;
         for (Human item : this.family) {
             if (id < item.getId()) id = item.getId();
